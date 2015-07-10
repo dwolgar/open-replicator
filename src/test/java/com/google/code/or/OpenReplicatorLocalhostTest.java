@@ -21,16 +21,16 @@ public class OpenReplicatorLocalhostTest {
 			throws Exception {
 		//
 		final OpenReplicator or = new OpenReplicator();
-//		or.setUser("jiao");
-//		or.setPassword("123456");
-//		or.setHost("TN-00-50000145");
-		or.setUser("replicator");
+		or.setUser("jiao");
 		or.setPassword("123456");
-		or.setHost("TN-BJ-00000419");//TN-00-50000044
-		or.setPort(3306);
+		or.setHost("TN-00-50000145");
+//		or.setUser("replicator");
+//		or.setPassword("123456");
+//		or.setHost("TN-BJ-00000419");//TN-00-50000044
+		or.setPort(3356);
 		or.setServerId(1);
 		or.setBinlogPosition(4);
-		or.setBinlogFileName("mysql-bin.000004");
+		or.setBinlogFileName("mysql-bin.000027");
 		or.setBinlogEventListener(new BinlogEventListener() {
 			public void onEvents(BinlogEventV4 event) {
 				LOGGER.info("{}", event);

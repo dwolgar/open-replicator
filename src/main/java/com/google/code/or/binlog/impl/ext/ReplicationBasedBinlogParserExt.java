@@ -16,6 +16,8 @@
  */
 package com.google.code.or.binlog.impl.ext;
 
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +54,16 @@ public class ReplicationBasedBinlogParserExt extends ReplicationBasedBinlogParse
 
 	public void setChecksum(XChecksum checksum) {
 		this.checksum = checksum;
+	}
+	
+	@Override
+	protected void doStart() throws Exception {
+		this.checksum.reset();
+	}
+
+	@Override
+	protected void doStop(long timeout, TimeUnit unit) throws Exception {
+		this.checksum.reset();
 	}
 
 	/**

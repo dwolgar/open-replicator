@@ -16,8 +16,10 @@
  */
 package com.google.code.or;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -71,7 +73,7 @@ public class OpenReplicator {
 	protected XChecksum checksum;
 
 	// VARBINARY -> VARBINARY : StringColumn -> StringColumn
-	protected HashMap<String, String> variables = new HashMap<String, String>();
+	protected Map<String, String> variables = new HashMap<String, String>();
 
 	/**
 	 * 
@@ -258,8 +260,8 @@ public class OpenReplicator {
 		this.checksum = checksum;
 	}
 
-	public HashMap<String, String> getVariables() {
-		return this.variables;
+	public Map<String, String> getVariables() {
+		return Collections.unmodifiableMap(this.variables);
 	}
 
 	protected void readSettings() throws Exception {
@@ -315,7 +317,7 @@ public class OpenReplicator {
 		// NONE | CRC32
 		this.checksum = XChecksumFactory.create(variables.get("binlog_checksum"));
 
-		if (checksum != null) {
+		if (this.checksum.getType() != ChecksumType.NONE) {
 			final ComQuery command = new ComQuery();
 			String cmd = "SET @master_binlog_checksum= '@@global.binlog_checksum'";
 			StringColumn sc = StringColumn.valueOf(cmd.getBytes("UTF-8"));

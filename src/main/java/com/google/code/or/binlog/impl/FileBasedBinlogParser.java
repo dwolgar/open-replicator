@@ -47,6 +47,7 @@ public class FileBasedBinlogParser extends AbstractBinlogParser {
 	protected long startPosition = 4;
 
 	
+	
 	/**
 	 * 
 	 */

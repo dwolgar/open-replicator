@@ -57,7 +57,7 @@ public class XChecksumCRC32Impl implements XChecksum {
 		
 		if (expected != (int) this.getValue())
 			throw new IllegalStateException(
-					"Checksum Illegal State, the expected crc value is [" + expected
+					"Cyclic Redundancy Check (CRC32) Illegal State, the expected crc value is [" + expected
 							+ "], but calculated value is ["
 							+ (int) this.getValue() + "]");
 		
