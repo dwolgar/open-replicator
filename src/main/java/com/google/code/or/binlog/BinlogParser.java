@@ -1,18 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to You under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.google.code.or.binlog;
 
@@ -25,31 +23,31 @@ import java.util.concurrent.TimeUnit;
  * @see http://forge.mysql.com/wiki/MySQL_Internals
  */
 public interface BinlogParser {
-	
-	/**
+
+  /**
 	 * 
 	 */
-	boolean isRunning();
-	
-	void start() throws Exception;
-	
-	void stop(long timeout, TimeUnit unit) throws Exception;
-	
-	/**
+  boolean isRunning();
+
+  void start() throws Exception;
+
+  void stop(long timeout, TimeUnit unit) throws Exception;
+
+  /**
 	 * 
 	 */
-	void setEventFilter(BinlogEventFilter filter);
-	
-	void setEventListener(BinlogEventListener listener);
-	
-	/**
+  void setEventFilter(BinlogEventFilter filter);
+
+  void setEventListener(BinlogEventListener listener);
+
+  /**
 	 * 
 	 */
-	List<BinlogParserListener> getParserListeners();
-	
-	boolean addParserListener(BinlogParserListener listener);
-	
-	boolean removeParserListener(BinlogParserListener listener);
-	
-	void setParserListeners(List<BinlogParserListener> listeners);
+  List<BinlogParserListener> getParserListeners();
+
+  boolean addParserListener(BinlogParserListener listener);
+
+  boolean removeParserListener(BinlogParserListener listener);
+
+  void setParserListeners(List<BinlogParserListener> listeners);
 }

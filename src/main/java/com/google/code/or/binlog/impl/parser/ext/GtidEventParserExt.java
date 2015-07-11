@@ -13,10 +13,11 @@ import com.google.code.or.io.XInputStream;
 
 /**
  * GTID Event
- *
+ * 
  * <p>
- *     Event format:
- *     <pre>
+ * Event format:
+ * 
+ * <pre>
  *         +-------------------+
  *         | 1B commit flag    |
  *         +-------------------+
@@ -36,12 +37,14 @@ public class GtidEventParserExt extends AbstractBinlogEventParserExt {
   }
 
   @Override
-  public void parse(XInputStream is, BinlogEventV4Header header, BinlogParserContext context) throws IOException {
+  public void parse(XInputStream is, BinlogEventV4Header header, BinlogParserContext context)
+      throws IOException {
     is.readBytes(1, checksum); // commit flag, always true
     byte[] sourceId = is.readBytes(16, checksum);
-    long transactionId = ByteBuffer.wrap(is.readBytes(8, checksum)).order(ByteOrder.LITTLE_ENDIAN).getLong();
+    long transactionId =
+        ByteBuffer.wrap(is.readBytes(8, checksum)).order(ByteOrder.LITTLE_ENDIAN).getLong();
     is.skip(is.available()); // position at next event
-    checksum.reset();//CRC32
+    checksum.reset();// CRC32
     GtidEvent event = new GtidEvent(sourceId, transactionId);
     event.setHeader(header);
 

@@ -1,18 +1,16 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to You under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.google.code.or.binlog.impl.parser.ext;
 
@@ -58,131 +56,161 @@ import com.google.code.or.io.XInputStream;
  * @author Arbore
  */
 public abstract class AbstractRowEventParserExt extends AbstractBinlogEventParserExt {
-	//
-	protected BinlogRowEventFilter rowEventFilter;
-	
-	/**
-	 * 
-	 */
-	public AbstractRowEventParserExt(int eventType,XChecksum checksum) {
-		super(eventType, checksum);
-		this.rowEventFilter = new BinlogRowEventFilterImpl();
-	}
-	
-	/**
-	 * 
-	 */
-	public BinlogRowEventFilter getRowEventFilter() {
-		return rowEventFilter;
-	}
+  //
+  protected BinlogRowEventFilter rowEventFilter;
 
-	public void setRowEventFilter(BinlogRowEventFilter filter) {
-		this.rowEventFilter = filter;
-	}
-	
-	/**
+  /**
 	 * 
 	 */
-	protected Row parseRow(XInputStream is, TableMapEvent tme, BitColumn usedColumns) 
-	throws IOException {
-		//
-		int unusedColumnCount = 0;
-		final byte[] types = tme.getColumnTypes();
-		final Metadata metadata = tme.getColumnMetadata();
-		final BitColumn nullColumns = is.readBit(types.length, checksum);
-		final List<Column> columns = new ArrayList<Column>(types.length);
-		for(int i = 0; i < types.length; ++i) {
-			//
-			int length = 0;
-			final int meta = metadata.getMetadata(i);
-			int type = CodecUtils.toUnsigned(types[i]);
-			if(type == MySQLConstants.TYPE_STRING && meta > 256) {
-				final int meta0 = meta >> 8;
-				final int meta1 = meta & 0xFF;
-				if ((meta0 & 0x30) != 0x30) { // a long CHAR() field: see #37426
-					type = meta0 | 0x30;
-					length = meta1 | (((meta0 & 0x30) ^ 0x30) << 4); 
-				} else {
-					switch (meta0) {
-					case MySQLConstants.TYPE_SET:
-					case MySQLConstants.TYPE_ENUM:
-					case MySQLConstants.TYPE_STRING:
-						type = meta0;
-						length = meta1;
-						break;
-					default:
-						throw new RuntimeException("assertion failed, unknown column type: " + type);
-					}
-				}
-			}
-			
-			//
-			if(!usedColumns.get(i)) {
-				unusedColumnCount++;
-				continue;
-			} else if(nullColumns.get(i - unusedColumnCount)) {
-				columns.add(NullColumn.valueOf(type));
-				continue;
-			}
-			
-			//
-			switch(type) {
-			case MySQLConstants.TYPE_TINY: columns.add(TinyColumn.valueOf(is.readSignedInt(1, checksum))); break;
-			case MySQLConstants.TYPE_SHORT: columns.add(ShortColumn.valueOf(is.readSignedInt(2, checksum))); break;
-			case MySQLConstants.TYPE_INT24: columns.add(Int24Column.valueOf(is.readSignedInt(3, checksum))); break;
-			case MySQLConstants.TYPE_LONG: columns.add(LongColumn.valueOf(is.readSignedInt(4, checksum))); break;
-			case MySQLConstants.TYPE_LONGLONG: columns.add(LongLongColumn.valueOf(is.readSignedLong(8, checksum))); break;
-			case MySQLConstants.TYPE_FLOAT: columns.add(FloatColumn.valueOf(Float.intBitsToFloat(is.readInt(4, checksum)))); break;
-			case MySQLConstants.TYPE_DOUBLE: columns.add(DoubleColumn.valueOf(Double.longBitsToDouble(is.readLong(8, checksum)))); break;
-			case MySQLConstants.TYPE_YEAR: columns.add(YearColumn.valueOf(MySQLUtils.toYear(is.readInt(1, checksum)))); break;
-			case MySQLConstants.TYPE_DATE: columns.add(DateColumn.valueOf(MySQLUtils.toDate(is.readInt(3, checksum)))); break;
-			case MySQLConstants.TYPE_TIME: columns.add(TimeColumn.valueOf(MySQLUtils.toTime(is.readInt(3, checksum)))); break;
-			case MySQLConstants.TYPE_DATETIME: columns.add(DatetimeColumn.valueOf(MySQLUtils.toDatetime(is.readLong(8, checksum)))); break;
-			case MySQLConstants.TYPE_TIMESTAMP: columns.add(TimestampColumn.valueOf(MySQLUtils.toTimestamp(is.readLong(4, checksum)))); break;
-			case MySQLConstants.TYPE_ENUM: columns.add(EnumColumn.valueOf(is.readInt(length, checksum))); break;
-			case MySQLConstants.TYPE_SET: columns.add(SetColumn.valueOf(is.readLong(length, checksum))); break;
-			case MySQLConstants.TYPE_BIT: 
-				final int bitLength = (meta >> 8) * 8 + (meta & 0xFF);
-				columns.add(is.readBit(bitLength, false, checksum));
-				break;
-			case MySQLConstants.TYPE_BLOB:
-				final int blobLength = is.readInt(meta, checksum);
-				columns.add(BlobColumn.valueOf(is.readBytes(blobLength, checksum)));
-				break;
-			case MySQLConstants.TYPE_NEWDECIMAL:
-				final int precision = meta & 0xFF;
-		        final int scale = meta >> 8;
-		        final int decimalLength = MySQLUtils.getDecimalBinarySize(precision, scale);
-		        columns.add(DecimalColumn.valueOf(MySQLUtils.toDecimal(precision, scale, is.readBytes(decimalLength, checksum)), precision, scale));
-				break;
-			case MySQLConstants.TYPE_STRING:
-				final int stringLength = length < 256 ? is.readInt(1, checksum) : is.readInt(2, checksum);
-				columns.add(is.readFixedLengthString(stringLength, checksum));
-				break;
-			case MySQLConstants.TYPE_VARCHAR:
-			case MySQLConstants.TYPE_VAR_STRING:
-				final int varcharLength = meta < 256 ? is.readInt(1, checksum) : is.readInt(2, checksum);
-				columns.add(is.readFixedLengthString(varcharLength, checksum));
-				break;
-			case MySQLConstants.TYPE_TIME2:
-				final int value1 = is.readInt(3, false, checksum);
-				final int nanos1 = is.readInt((meta + 1) / 2, false, checksum);
-				columns.add(Time2Column.valueOf(MySQLUtils.toTime2(value1, nanos1)));
-				break;
-			case MySQLConstants.TYPE_DATETIME2:
-				final long value2 = is.readLong(5, false, checksum);
-				final int nanos2 = is.readInt((meta + 1) / 2, false, checksum);
-				columns.add(Datetime2Column.valueOf(MySQLUtils.toDatetime2(value2, nanos2)));
-				break;
-			case MySQLConstants.TYPE_TIMESTAMP2:
-				final long value3 = is.readLong(4, false, checksum);
-				final int nanos3 = is.readInt((meta + 1) / 2, false, checksum);
-				columns.add(Timestamp2Column.valueOf(MySQLUtils.toTimestamp2(value3, nanos3)));
-				break;
-			default:
-				throw new RuntimeException("assertion failed, unknown column type: " + type);
-			}
-		}
-		return new Row(columns);
-	}
+  public AbstractRowEventParserExt(int eventType, XChecksum checksum) {
+    super(eventType, checksum);
+    this.rowEventFilter = new BinlogRowEventFilterImpl();
+  }
+
+  /**
+	 * 
+	 */
+  public BinlogRowEventFilter getRowEventFilter() {
+    return rowEventFilter;
+  }
+
+  public void setRowEventFilter(BinlogRowEventFilter filter) {
+    this.rowEventFilter = filter;
+  }
+
+  /**
+	 * 
+	 */
+  protected Row parseRow(XInputStream is, TableMapEvent tme, BitColumn usedColumns)
+      throws IOException {
+    //
+    int unusedColumnCount = 0;
+    final byte[] types = tme.getColumnTypes();
+    final Metadata metadata = tme.getColumnMetadata();
+    final BitColumn nullColumns = is.readBit(types.length, checksum);
+    final List<Column> columns = new ArrayList<Column>(types.length);
+    for (int i = 0; i < types.length; ++i) {
+      //
+      int length = 0;
+      final int meta = metadata.getMetadata(i);
+      int type = CodecUtils.toUnsigned(types[i]);
+      if (type == MySQLConstants.TYPE_STRING && meta > 256) {
+        final int meta0 = meta >> 8;
+        final int meta1 = meta & 0xFF;
+        if ((meta0 & 0x30) != 0x30) { // a long CHAR() field: see #37426
+          type = meta0 | 0x30;
+          length = meta1 | (((meta0 & 0x30) ^ 0x30) << 4);
+        } else {
+          switch (meta0) {
+            case MySQLConstants.TYPE_SET:
+            case MySQLConstants.TYPE_ENUM:
+            case MySQLConstants.TYPE_STRING:
+              type = meta0;
+              length = meta1;
+              break;
+            default:
+              throw new RuntimeException("assertion failed, unknown column type: " + type);
+          }
+        }
+      }
+
+      //
+      if (!usedColumns.get(i)) {
+        unusedColumnCount++;
+        continue;
+      } else if (nullColumns.get(i - unusedColumnCount)) {
+        columns.add(NullColumn.valueOf(type));
+        continue;
+      }
+
+      //
+      switch (type) {
+        case MySQLConstants.TYPE_TINY:
+          columns.add(TinyColumn.valueOf(is.readSignedInt(1, checksum)));
+          break;
+        case MySQLConstants.TYPE_SHORT:
+          columns.add(ShortColumn.valueOf(is.readSignedInt(2, checksum)));
+          break;
+        case MySQLConstants.TYPE_INT24:
+          columns.add(Int24Column.valueOf(is.readSignedInt(3, checksum)));
+          break;
+        case MySQLConstants.TYPE_LONG:
+          columns.add(LongColumn.valueOf(is.readSignedInt(4, checksum)));
+          break;
+        case MySQLConstants.TYPE_LONGLONG:
+          columns.add(LongLongColumn.valueOf(is.readSignedLong(8, checksum)));
+          break;
+        case MySQLConstants.TYPE_FLOAT:
+          columns.add(FloatColumn.valueOf(Float.intBitsToFloat(is.readInt(4, checksum))));
+          break;
+        case MySQLConstants.TYPE_DOUBLE:
+          columns.add(DoubleColumn.valueOf(Double.longBitsToDouble(is.readLong(8, checksum))));
+          break;
+        case MySQLConstants.TYPE_YEAR:
+          columns.add(YearColumn.valueOf(MySQLUtils.toYear(is.readInt(1, checksum))));
+          break;
+        case MySQLConstants.TYPE_DATE:
+          columns.add(DateColumn.valueOf(MySQLUtils.toDate(is.readInt(3, checksum))));
+          break;
+        case MySQLConstants.TYPE_TIME:
+          columns.add(TimeColumn.valueOf(MySQLUtils.toTime(is.readInt(3, checksum))));
+          break;
+        case MySQLConstants.TYPE_DATETIME:
+          columns.add(DatetimeColumn.valueOf(MySQLUtils.toDatetime(is.readLong(8, checksum))));
+          break;
+        case MySQLConstants.TYPE_TIMESTAMP:
+          columns.add(TimestampColumn.valueOf(MySQLUtils.toTimestamp(is.readLong(4, checksum))));
+          break;
+        case MySQLConstants.TYPE_ENUM:
+          columns.add(EnumColumn.valueOf(is.readInt(length, checksum)));
+          break;
+        case MySQLConstants.TYPE_SET:
+          columns.add(SetColumn.valueOf(is.readLong(length, checksum)));
+          break;
+        case MySQLConstants.TYPE_BIT:
+          final int bitLength = (meta >> 8) * 8 + (meta & 0xFF);
+          columns.add(is.readBit(bitLength, false, checksum));
+          break;
+        case MySQLConstants.TYPE_BLOB:
+          final int blobLength = is.readInt(meta, checksum);
+          columns.add(BlobColumn.valueOf(is.readBytes(blobLength, checksum)));
+          break;
+        case MySQLConstants.TYPE_NEWDECIMAL:
+          final int precision = meta & 0xFF;
+          final int scale = meta >> 8;
+          final int decimalLength = MySQLUtils.getDecimalBinarySize(precision, scale);
+          columns.add(DecimalColumn.valueOf(
+              MySQLUtils.toDecimal(precision, scale, is.readBytes(decimalLength, checksum)),
+              precision, scale));
+          break;
+        case MySQLConstants.TYPE_STRING:
+          final int stringLength = length < 256 ? is.readInt(1, checksum) : is.readInt(2, checksum);
+          columns.add(is.readFixedLengthString(stringLength, checksum));
+          break;
+        case MySQLConstants.TYPE_VARCHAR:
+        case MySQLConstants.TYPE_VAR_STRING:
+          final int varcharLength = meta < 256 ? is.readInt(1, checksum) : is.readInt(2, checksum);
+          columns.add(is.readFixedLengthString(varcharLength, checksum));
+          break;
+        case MySQLConstants.TYPE_TIME2:
+          final int value1 = is.readInt(3, false, checksum);
+          final int nanos1 = is.readInt((meta + 1) / 2, false, checksum);
+          columns.add(Time2Column.valueOf(MySQLUtils.toTime2(value1, nanos1)));
+          break;
+        case MySQLConstants.TYPE_DATETIME2:
+          final long value2 = is.readLong(5, false, checksum);
+          final int nanos2 = is.readInt((meta + 1) / 2, false, checksum);
+          columns.add(Datetime2Column.valueOf(MySQLUtils.toDatetime2(value2, nanos2)));
+          break;
+        case MySQLConstants.TYPE_TIMESTAMP2:
+          final long value3 = is.readLong(4, false, checksum);
+          final int nanos3 = is.readInt((meta + 1) / 2, false, checksum);
+          columns.add(Timestamp2Column.valueOf(MySQLUtils.toTimestamp2(value3, nanos3)));
+          break;
+        default:
+          throw new RuntimeException("assertion failed, unknown column type: " + type);
+      }
+    }
+    return new Row(columns);
+  }
 }

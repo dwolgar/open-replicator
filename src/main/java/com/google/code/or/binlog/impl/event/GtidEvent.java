@@ -1,7 +1,6 @@
 package com.google.code.or.binlog.impl.event;
 
-public class GtidEvent extends AbstractBinlogEventV4
-{
+public class GtidEvent extends AbstractBinlogEventV4 {
   private final byte[] sourceId;
   private final long transactionId;
 

@@ -12,10 +12,11 @@ import java.nio.ByteOrder;
 
 /**
  * GTID Event
- *
+ * 
  * <p>
- *     Event format:
- *     <pre>
+ * Event format:
+ * 
+ * <pre>
  *         +-------------------+
  *         | 1B commit flag    |
  *         +-------------------+
@@ -35,7 +36,8 @@ public class GtidEventParser extends AbstractBinlogEventParser {
   }
 
   @Override
-  public void parse(XInputStream is, BinlogEventV4Header header, BinlogParserContext context) throws IOException {
+  public void parse(XInputStream is, BinlogEventV4Header header, BinlogParserContext context)
+      throws IOException {
     is.readBytes(1); // commit flag, always true
     byte[] sourceId = is.readBytes(16);
     long transactionId = ByteBuffer.wrap(is.readBytes(8)).order(ByteOrder.LITTLE_ENDIAN).getLong();
