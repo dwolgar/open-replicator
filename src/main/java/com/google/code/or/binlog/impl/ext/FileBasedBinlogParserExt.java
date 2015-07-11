@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import com.google.code.or.binlog.BinlogEventParser;
 import com.google.code.or.binlog.ext.XChecksum;
 import com.google.code.or.binlog.ext.XChecksumNOPImpl;
-import com.google.code.or.binlog.impl.AbstractBinlogParser;
 import com.google.code.or.binlog.impl.FileBasedBinlogParser;
 import com.google.code.or.binlog.impl.event.BinlogEventV4HeaderImpl;
 import com.google.code.or.common.util.CodecUtils;
