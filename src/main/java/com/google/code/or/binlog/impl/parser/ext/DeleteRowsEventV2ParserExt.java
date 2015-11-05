@@ -55,6 +55,10 @@ public class DeleteRowsEventV2ParserExt extends AbstractRowEventParserExt {
 
     //
     final DeleteRowsEventV2 event = new DeleteRowsEventV2(header);
+    
+	event.setDatabaseName(tme.getDatabaseName().toString());
+	event.setTableName(tme.getTableName().toString());
+
     event.setTableId(tableId);
     event.setReserved(is.readInt(2, checksum));
     event.setExtraInfoLength(is.readInt(2, checksum));

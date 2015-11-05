@@ -55,6 +55,10 @@ public class WriteRowsEventV2ParserExt extends AbstractRowEventParserExt {
 
     //
     final WriteRowsEventV2 event = new WriteRowsEventV2(header);
+    
+	event.setDatabaseName(tme.getDatabaseName().toString());
+	event.setTableName(tme.getTableName().toString());
+
     event.setTableId(tableId);
     event.setReserved(is.readInt(2, checksum));
     event.setExtraInfoLength(is.readInt(2, checksum));
