@@ -53,6 +53,10 @@ public class WriteRowsEventParser extends AbstractRowEventParser {
 
     //
     final WriteRowsEvent event = new WriteRowsEvent(header);
+    
+	event.setDatabaseName(tme.getDatabaseName().toString());
+	event.setTableName(tme.getTableName().toString());
+
     event.setTableId(tableId);
     event.setReserved(is.readInt(2));
     event.setColumnCount(is.readUnsignedLong());
