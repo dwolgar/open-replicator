@@ -14,6 +14,8 @@
  */
 package com.google.code.or.binlog.impl.variable.status;
 
+import java.io.Serializable;
+
 import com.google.code.or.binlog.StatusVariable;
 import com.google.code.or.common.util.ToStringBuilder;
 
@@ -21,29 +23,30 @@ import com.google.code.or.common.util.ToStringBuilder;
  * 
  * @author Jingqi Xu
  */
-public abstract class AbstractStatusVariable implements StatusVariable {
-  //
-  protected final int type;
+public abstract class AbstractStatusVariable implements StatusVariable, Serializable {
+	private static final long serialVersionUID = -5619142154981576916L;
+	//
+	protected final int type;
 
-  /**
+	/**
 	 * 
 	 */
-  public AbstractStatusVariable(int type) {
-    this.type = type;
-  }
+	public AbstractStatusVariable(int type) {
+		this.type = type;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public int getType() {
-    return type;
-  }
+	public int getType() {
+		return type;
+	}
 }

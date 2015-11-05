@@ -22,32 +22,34 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public class UserVariableReal extends AbstractUserVariable {
-  //
-  public static final int TYPE = MySQLConstants.REAL_RESULT;
+	private static final long serialVersionUID = 7833160454632485967L;
 
-  //
-  private final double value;
+	//
+	public static final int TYPE = MySQLConstants.REAL_RESULT;
 
-  /**
+	//
+	private final double value;
+
+	/**
 	 * 
 	 */
-  public UserVariableReal(double value) {
-    super(TYPE);
-    this.value = value;
-  }
+	public UserVariableReal(double value) {
+		super(TYPE);
+		this.value = value;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("value", value).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("value", value).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public Double getValue() {
-    return this.value;
-  }
+	public Double getValue() {
+		return this.value;
+	}
 }

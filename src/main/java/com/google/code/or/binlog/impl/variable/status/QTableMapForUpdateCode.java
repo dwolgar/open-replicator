@@ -25,39 +25,41 @@ import com.google.code.or.io.XInputStream;
  * @author Jingqi Xu
  */
 public class QTableMapForUpdateCode extends AbstractStatusVariable {
-  //
-  public static final int TYPE = MySQLConstants.Q_TABLE_MAP_FOR_UPDATE_CODE;
+	private static final long serialVersionUID = 2749138191941917735L;
 
-  //
-  private final long tableMap;
+	//
+	public static final int TYPE = MySQLConstants.Q_TABLE_MAP_FOR_UPDATE_CODE;
 
-  /**
+	//
+	private final long tableMap;
+
+	/**
 	 * 
 	 */
-  public QTableMapForUpdateCode(long tableMap) {
-    super(TYPE);
-    this.tableMap = tableMap;
-  }
+	public QTableMapForUpdateCode(long tableMap) {
+		super(TYPE);
+		this.tableMap = tableMap;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("tableMap", tableMap).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("tableMap", tableMap).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public long getTableMap() {
-    return tableMap;
-  }
+	public long getTableMap() {
+		return tableMap;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public static QTableMapForUpdateCode valueOf(XInputStream tis) throws IOException {
-    return new QTableMapForUpdateCode(tis.readLong(8));
-  }
+	public static QTableMapForUpdateCode valueOf(XInputStream tis) throws IOException {
+		return new QTableMapForUpdateCode(tis.readLong(8));
+	}
 }

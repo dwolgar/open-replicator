@@ -25,39 +25,41 @@ import com.google.code.or.io.XInputStream;
  * @author Jingqi Xu
  */
 public class QMicroseconds extends AbstractStatusVariable {
-  //
-  public static final int TYPE = MySQLConstants.Q_MICROSECONDS;
+	private static final long serialVersionUID = 1028184556713458192L;
 
-  //
-  private final int startUsec;
+	//
+	public static final int TYPE = MySQLConstants.Q_MICROSECONDS;
 
-  /**
+	//
+	private final int startUsec;
+
+	/**
 	 * 
 	 */
-  public QMicroseconds(int startUsec) {
-    super(TYPE);
-    this.startUsec = startUsec;
-  }
+	public QMicroseconds(int startUsec) {
+		super(TYPE);
+		this.startUsec = startUsec;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("startUsec", startUsec).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("startUsec", startUsec).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public int getStartUsec() {
-    return startUsec;
-  }
+	public int getStartUsec() {
+		return startUsec;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public static QMicroseconds valueOf(XInputStream tis) throws IOException {
-    return new QMicroseconds(tis.readInt(3));
-  }
+	public static QMicroseconds valueOf(XInputStream tis) throws IOException {
+		return new QMicroseconds(tis.readInt(3));
+	}
 }

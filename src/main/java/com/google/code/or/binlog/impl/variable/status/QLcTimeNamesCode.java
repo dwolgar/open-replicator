@@ -25,39 +25,41 @@ import com.google.code.or.io.XInputStream;
  * @author Jingqi Xu
  */
 public class QLcTimeNamesCode extends AbstractStatusVariable {
-  //
-  public static final int TYPE = MySQLConstants.Q_LC_TIME_NAMES_CODE;
+	private static final long serialVersionUID = -1277000169571567899L;
 
-  //
-  private final int lcTimeNames;
+	//
+	public static final int TYPE = MySQLConstants.Q_LC_TIME_NAMES_CODE;
 
-  /**
+	//
+	private final int lcTimeNames;
+
+	/**
 	 * 
 	 */
-  public QLcTimeNamesCode(int lcTimeNames) {
-    super(TYPE);
-    this.lcTimeNames = lcTimeNames;
-  }
+	public QLcTimeNamesCode(int lcTimeNames) {
+		super(TYPE);
+		this.lcTimeNames = lcTimeNames;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("lcTimeNames", lcTimeNames).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("lcTimeNames", lcTimeNames).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public int getLcTimeNames() {
-    return lcTimeNames;
-  }
+	public int getLcTimeNames() {
+		return lcTimeNames;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public static QLcTimeNamesCode valueOf(XInputStream tis) throws IOException {
-    return new QLcTimeNamesCode(tis.readInt(2));
-  }
+	public static QLcTimeNamesCode valueOf(XInputStream tis) throws IOException {
+		return new QLcTimeNamesCode(tis.readInt(2));
+	}
 }

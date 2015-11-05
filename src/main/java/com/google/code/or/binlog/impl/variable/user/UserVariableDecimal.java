@@ -22,32 +22,34 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public class UserVariableDecimal extends AbstractUserVariable {
-  //
-  public static final int TYPE = MySQLConstants.DECIMAL_RESULT;
+	private static final long serialVersionUID = 4219496937268213773L;
 
-  //
-  private final byte[] value;
+	//
+	public static final int TYPE = MySQLConstants.DECIMAL_RESULT;
 
-  /**
+	//
+	private final byte[] value;
+
+	/**
 	 * 
 	 */
-  public UserVariableDecimal(byte[] value) {
-    super(TYPE);
-    this.value = value;
-  }
+	public UserVariableDecimal(byte[] value) {
+		super(TYPE);
+		this.value = value;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("value", value).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("value", value).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public byte[] getValue() {
-    return this.value;
-  }
+	public byte[] getValue() {
+		return this.value;
+	}
 }

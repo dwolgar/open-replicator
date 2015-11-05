@@ -22,32 +22,34 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public class UserVariableRow extends AbstractUserVariable {
-  //
-  public static final int TYPE = MySQLConstants.ROW_RESULT;
+	private static final long serialVersionUID = -8075880767193500622L;
 
-  //
-  private final byte[] value;
+	//
+	public static final int TYPE = MySQLConstants.ROW_RESULT;
 
-  /**
+	//
+	private final byte[] value;
+
+	/**
 	 * 
 	 */
-  public UserVariableRow(byte[] value) {
-    super(TYPE);
-    this.value = value;
-  }
+	public UserVariableRow(byte[] value) {
+		super(TYPE);
+		this.value = value;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("value", value).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("value", value).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public byte[] getValue() {
-    return this.value;
-  }
+	public byte[] getValue() {
+		return this.value;
+	}
 }

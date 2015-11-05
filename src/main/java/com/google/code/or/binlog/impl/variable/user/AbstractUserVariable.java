@@ -14,6 +14,8 @@
  */
 package com.google.code.or.binlog.impl.variable.user;
 
+import java.io.Serializable;
+
 import com.google.code.or.binlog.UserVariable;
 import com.google.code.or.common.util.ToStringBuilder;
 
@@ -21,29 +23,30 @@ import com.google.code.or.common.util.ToStringBuilder;
  * 
  * @author Jingqi Xu
  */
-public abstract class AbstractUserVariable implements UserVariable {
-  //
-  protected final int type;
+public abstract class AbstractUserVariable implements UserVariable, Serializable {
+	private static final long serialVersionUID = -171859655164810098L;
+	//
+	protected final int type;
 
-  /**
+	/**
 	 * 
 	 */
-  public AbstractUserVariable(int type) {
-    this.type = type;
-  }
+	public AbstractUserVariable(int type) {
+		this.type = type;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public int getType() {
-    return type;
-  }
+	public int getType() {
+		return type;
+	}
 }

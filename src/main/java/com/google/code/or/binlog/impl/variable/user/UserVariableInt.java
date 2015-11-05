@@ -22,35 +22,37 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public class UserVariableInt extends AbstractUserVariable {
-  //
-  public static final int TYPE = MySQLConstants.INT_RESULT;
+	private static final long serialVersionUID = 2487405548198155132L;
 
-  //
-  private final long value;
-  @SuppressWarnings("unused")
-  private final int todo; // TODO
+	//
+	public static final int TYPE = MySQLConstants.INT_RESULT;
 
-  /**
+	//
+	private final long value;
+	@SuppressWarnings("unused")
+	private final int todo; // TODO
+
+	/**
 	 * 
 	 */
-  public UserVariableInt(long value, int todo) {
-    super(TYPE);
-    this.value = value;
-    this.todo = todo;
-  }
+	public UserVariableInt(long value, int todo) {
+		super(TYPE);
+		this.value = value;
+		this.todo = todo;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("value", value).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("value", value).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public Long getValue() {
-    return this.value;
-  }
+	public Long getValue() {
+		return this.value;
+	}
 }

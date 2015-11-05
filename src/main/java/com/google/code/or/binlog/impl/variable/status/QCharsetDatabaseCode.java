@@ -25,40 +25,42 @@ import com.google.code.or.io.XInputStream;
  * @author Jingqi Xu
  */
 public class QCharsetDatabaseCode extends AbstractStatusVariable {
-  //
-  public static final int TYPE = MySQLConstants.Q_CHARSET_DATABASE_CODE;
+	private static final long serialVersionUID = -4418660647646738360L;
 
-  //
-  private final int collationDatabase;
+	//
+	public static final int TYPE = MySQLConstants.Q_CHARSET_DATABASE_CODE;
 
-  /**
+	//
+	private final int collationDatabase;
+
+	/**
 	 * 
 	 */
-  public QCharsetDatabaseCode(int collationDatabase) {
-    super(TYPE);
-    this.collationDatabase = collationDatabase;
-  }
+	public QCharsetDatabaseCode(int collationDatabase) {
+		super(TYPE);
+		this.collationDatabase = collationDatabase;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("collationDatabase", collationDatabase).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("collationDatabase", collationDatabase).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public int getCollationDatabase() {
-    return collationDatabase;
-  }
+	public int getCollationDatabase() {
+		return collationDatabase;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public static QCharsetDatabaseCode valueOf(XInputStream tis) throws IOException {
-    final int collationDatabase = tis.readInt(2);
-    return new QCharsetDatabaseCode(collationDatabase);
-  }
+	public static QCharsetDatabaseCode valueOf(XInputStream tis) throws IOException {
+		final int collationDatabase = tis.readInt(2);
+		return new QCharsetDatabaseCode(collationDatabase);
+	}
 }

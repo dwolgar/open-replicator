@@ -25,39 +25,41 @@ import com.google.code.or.io.XInputStream;
  * @author Jingqi Xu
  */
 public class QSQLModeCode extends AbstractStatusVariable {
-  //
-  public static final int TYPE = MySQLConstants.Q_SQL_MODE_CODE;
+	private static final long serialVersionUID = -6007393149749050113L;
 
-  //
-  private final long sqlMode;
+	//
+	public static final int TYPE = MySQLConstants.Q_SQL_MODE_CODE;
 
-  /**
+	//
+	private final long sqlMode;
+
+	/**
 	 * 
 	 */
-  public QSQLModeCode(long sqlMode) {
-    super(TYPE);
-    this.sqlMode = sqlMode;
-  }
+	public QSQLModeCode(long sqlMode) {
+		super(TYPE);
+		this.sqlMode = sqlMode;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("sqlMode", sqlMode).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("sqlMode", sqlMode).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public long getSqlMode() {
-    return sqlMode;
-  }
+	public long getSqlMode() {
+		return sqlMode;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public static QSQLModeCode valueOf(XInputStream tis) throws IOException {
-    return new QSQLModeCode(tis.readLong(8));
-  }
+	public static QSQLModeCode valueOf(XInputStream tis) throws IOException {
+		return new QSQLModeCode(tis.readLong(8));
+	}
 }

@@ -14,6 +14,7 @@
  */
 package com.google.code.or.common.glossary;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.google.code.or.common.util.ToStringBuilder;
@@ -22,35 +23,36 @@ import com.google.code.or.common.util.ToStringBuilder;
  * 
  * @author Jingqi Xu
  */
-public class Row {
-  //
-  private List<Column> columns;
+public class Row implements Serializable {
+	private static final long serialVersionUID = -955774066713078L;
+	//
+	private List<Column> columns;
 
-  /**
+	/**
 	 * 
 	 */
-  public Row() {}
+	public Row() {}
 
-  public Row(List<Column> columns) {
-    this.columns = columns;
-  }
+	public Row(List<Column> columns) {
+		this.columns = columns;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("columns", columns).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("columns", columns).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public List<Column> getColumns() {
-    return columns;
-  }
+	public List<Column> getColumns() {
+		return columns;
+	}
 
-  public void setColumns(List<Column> columns) {
-    this.columns = columns;
-  }
+	public void setColumns(List<Column> columns) {
+		this.columns = columns;
+	}
 }
