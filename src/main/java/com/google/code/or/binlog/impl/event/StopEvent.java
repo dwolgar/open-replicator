@@ -24,23 +24,24 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public final class StopEvent extends AbstractBinlogEventV4 {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.STOP_EVENT;
+	private static final long serialVersionUID = 6503190230211068434L;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.STOP_EVENT;
 
-  /**
+	/**
 	 * 
 	 */
-  public StopEvent() {}
+	public StopEvent() {}
 
-  public StopEvent(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public StopEvent(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header).toString();
+	}
 }

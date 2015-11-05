@@ -29,57 +29,59 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public final class DeleteRowsEvent extends AbstractRowEvent {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.DELETE_ROWS_EVENT;
+	private static final long serialVersionUID = 3637339700363108670L;
 
-  //
-  private UnsignedLong columnCount;
-  private BitColumn usedColumns;
-  private List<Row> rows;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.DELETE_ROWS_EVENT;
 
-  /**
+	//
+	private UnsignedLong columnCount;
+	private BitColumn usedColumns;
+	private List<Row> rows;
+
+	/**
 	 * 
 	 */
-  public DeleteRowsEvent() {}
+	public DeleteRowsEvent() {}
 
-  public DeleteRowsEvent(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public DeleteRowsEvent(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header).append("tableId", tableId)
-        .append("reserved", reserved).append("columnCount", columnCount)
-        .append("usedColumns", usedColumns).append("rows", rows).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header).append("tableId", tableId)
+				.append("reserved", reserved).append("columnCount", columnCount)
+				.append("usedColumns", usedColumns).append("rows", rows).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public UnsignedLong getColumnCount() {
-    return columnCount;
-  }
+	public UnsignedLong getColumnCount() {
+		return columnCount;
+	}
 
-  public void setColumnCount(UnsignedLong columnCount) {
-    this.columnCount = columnCount;
-  }
+	public void setColumnCount(UnsignedLong columnCount) {
+		this.columnCount = columnCount;
+	}
 
-  public BitColumn getUsedColumns() {
-    return usedColumns;
-  }
+	public BitColumn getUsedColumns() {
+		return usedColumns;
+	}
 
-  public void setUsedColumns(BitColumn usedColumns) {
-    this.usedColumns = usedColumns;
-  }
+	public void setUsedColumns(BitColumn usedColumns) {
+		this.usedColumns = usedColumns;
+	}
 
-  public List<Row> getRows() {
-    return rows;
-  }
+	public List<Row> getRows() {
+		return rows;
+	}
 
-  public void setRows(List<Row> rows) {
-    this.rows = rows;
-  }
+	public void setRows(List<Row> rows) {
+		this.rows = rows;
+	}
 }

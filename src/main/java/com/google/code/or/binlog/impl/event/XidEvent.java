@@ -28,37 +28,39 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public final class XidEvent extends AbstractBinlogEventV4 {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.XID_EVENT;
+	private static final long serialVersionUID = 7450729555051563514L;
 
-  //
-  private long xid;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.XID_EVENT;
 
-  /**
+	//
+	private long xid;
+
+	/**
 	 * 
 	 */
-  public XidEvent() {}
+	public XidEvent() {}
 
-  public XidEvent(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public XidEvent(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header).append("xid", xid).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header).append("xid", xid).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public long getXid() {
-    return xid;
-  }
+	public long getXid() {
+		return xid;
+	}
 
-  public void setXid(long xid) {
-    this.xid = xid;
-  }
+	public void setXid(long xid) {
+		this.xid = xid;
+	}
 }

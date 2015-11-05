@@ -26,47 +26,49 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public final class RandEvent extends AbstractBinlogEventV4 {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.RAND_EVENT;
+	private static final long serialVersionUID = -676004813844458819L;
 
-  //
-  private long randSeed1;
-  private long randSeed2;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.RAND_EVENT;
 
-  /**
+	//
+	private long randSeed1;
+	private long randSeed2;
+
+	/**
 	 * 
 	 */
-  public RandEvent() {}
+	public RandEvent() {}
 
-  public RandEvent(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public RandEvent(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header).append("randSeed1", randSeed1)
-        .append("randSeed2", randSeed2).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header).append("randSeed1", randSeed1)
+				.append("randSeed2", randSeed2).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public long getRandSeed1() {
-    return randSeed1;
-  }
+	public long getRandSeed1() {
+		return randSeed1;
+	}
 
-  public void setRandSeed1(long randSeed1) {
-    this.randSeed1 = randSeed1;
-  }
+	public void setRandSeed1(long randSeed1) {
+		this.randSeed1 = randSeed1;
+	}
 
-  public long getRandSeed2() {
-    return randSeed2;
-  }
+	public long getRandSeed2() {
+		return randSeed2;
+	}
 
-  public void setRandSeed2(long randSeed2) {
-    this.randSeed2 = randSeed2;
-  }
+	public void setRandSeed2(long randSeed2) {
+		this.randSeed2 = randSeed2;
+	}
 }

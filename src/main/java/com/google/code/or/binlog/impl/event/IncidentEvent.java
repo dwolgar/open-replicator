@@ -27,57 +27,59 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @see sql/rpl_constants.h
  */
 public final class IncidentEvent extends AbstractBinlogEventV4 {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.INCIDENT_EVENT;
+	private static final long serialVersionUID = 5692823047829346186L;
 
-  //
-  private int incidentNumber;
-  private int messageLength;
-  private StringColumn message;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.INCIDENT_EVENT;
 
-  /**
+	//
+	private int incidentNumber;
+	private int messageLength;
+	private StringColumn message;
+
+	/**
 	 * 
 	 */
-  public IncidentEvent() {}
+	public IncidentEvent() {}
 
-  public IncidentEvent(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public IncidentEvent(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header)
-        .append("incidentNumber", incidentNumber).append("messageLength", messageLength)
-        .append("message", message).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header)
+				.append("incidentNumber", incidentNumber).append("messageLength", messageLength)
+				.append("message", message).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public int getIncidentNumber() {
-    return incidentNumber;
-  }
+	public int getIncidentNumber() {
+		return incidentNumber;
+	}
 
-  public void setIncidentNumber(int incidentNumber) {
-    this.incidentNumber = incidentNumber;
-  }
+	public void setIncidentNumber(int incidentNumber) {
+		this.incidentNumber = incidentNumber;
+	}
 
-  public int getMessageLength() {
-    return messageLength;
-  }
+	public int getMessageLength() {
+		return messageLength;
+	}
 
-  public void setMessageLength(int messageLength) {
-    this.messageLength = messageLength;
-  }
+	public void setMessageLength(int messageLength) {
+		this.messageLength = messageLength;
+	}
 
-  public StringColumn getMessage() {
-    return message;
-  }
+	public StringColumn getMessage() {
+		return message;
+	}
 
-  public void setMessage(StringColumn message) {
-    this.message = message;
-  }
+	public void setMessage(StringColumn message) {
+		this.message = message;
+	}
 }

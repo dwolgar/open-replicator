@@ -29,76 +29,78 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public final class DeleteRowsEventV2 extends AbstractRowEvent {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.DELETE_ROWS_EVENT_V2;
+	private static final long serialVersionUID = -5469591796507754469L;
 
-  //
-  private int extraInfoLength;
-  private byte extraInfo[];
-  private UnsignedLong columnCount;
-  private BitColumn usedColumns;
-  private List<Row> rows;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.DELETE_ROWS_EVENT_V2;
 
-  /**
+	//
+	private int extraInfoLength;
+	private byte extraInfo[];
+	private UnsignedLong columnCount;
+	private BitColumn usedColumns;
+	private List<Row> rows;
+
+	/**
 	 * 
 	 */
-  public DeleteRowsEventV2() {}
+	public DeleteRowsEventV2() {}
 
-  public DeleteRowsEventV2(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public DeleteRowsEventV2(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header).append("tableId", tableId)
-        .append("reserved", reserved).append("extraInfoLength", extraInfoLength)
-        .append("extraInfo", extraInfo).append("columnCount", columnCount)
-        .append("usedColumns", usedColumns).append("rows", rows).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header).append("tableId", tableId)
+				.append("reserved", reserved).append("extraInfoLength", extraInfoLength)
+				.append("extraInfo", extraInfo).append("columnCount", columnCount)
+				.append("usedColumns", usedColumns).append("rows", rows).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public int getExtraInfoLength() {
-    return extraInfoLength;
-  }
+	public int getExtraInfoLength() {
+		return extraInfoLength;
+	}
 
-  public void setExtraInfoLength(int extraInfoLength) {
-    this.extraInfoLength = extraInfoLength;
-  }
+	public void setExtraInfoLength(int extraInfoLength) {
+		this.extraInfoLength = extraInfoLength;
+	}
 
-  public byte[] getExtraInfo() {
-    return extraInfo;
-  }
+	public byte[] getExtraInfo() {
+		return extraInfo;
+	}
 
-  public void setExtraInfo(byte[] extraInfo) {
-    this.extraInfo = extraInfo;
-  }
+	public void setExtraInfo(byte[] extraInfo) {
+		this.extraInfo = extraInfo;
+	}
 
-  public UnsignedLong getColumnCount() {
-    return columnCount;
-  }
+	public UnsignedLong getColumnCount() {
+		return columnCount;
+	}
 
-  public void setColumnCount(UnsignedLong columnCount) {
-    this.columnCount = columnCount;
-  }
+	public void setColumnCount(UnsignedLong columnCount) {
+		this.columnCount = columnCount;
+	}
 
-  public BitColumn getUsedColumns() {
-    return usedColumns;
-  }
+	public BitColumn getUsedColumns() {
+		return usedColumns;
+	}
 
-  public void setUsedColumns(BitColumn usedColumns) {
-    this.usedColumns = usedColumns;
-  }
+	public void setUsedColumns(BitColumn usedColumns) {
+		this.usedColumns = usedColumns;
+	}
 
-  public List<Row> getRows() {
-    return rows;
-  }
+	public List<Row> getRows() {
+		return rows;
+	}
 
-  public void setRows(List<Row> rows) {
-    this.rows = rows;
-  }
+	public void setRows(List<Row> rows) {
+		this.rows = rows;
+	}
 }

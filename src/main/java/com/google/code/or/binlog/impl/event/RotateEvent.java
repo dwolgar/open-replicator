@@ -27,48 +27,50 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public final class RotateEvent extends AbstractBinlogEventV4 {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.ROTATE_EVENT;
+	private static final long serialVersionUID = 2129997803902359868L;
 
-  //
-  private long binlogPosition;
-  private StringColumn binlogFileName;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.ROTATE_EVENT;
 
-  /**
+	//
+	private long binlogPosition;
+	private StringColumn binlogFileName;
+
+	/**
 	 * 
 	 */
-  public RotateEvent() {}
+	public RotateEvent() {}
 
-  public RotateEvent(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public RotateEvent(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header)
-        .append("binlogPosition", binlogPosition).append("binlogFileName", binlogFileName)
-        .toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header)
+				.append("binlogPosition", binlogPosition).append("binlogFileName", binlogFileName)
+				.toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public long getBinlogPosition() {
-    return binlogPosition;
-  }
+	public long getBinlogPosition() {
+		return binlogPosition;
+	}
 
-  public void setBinlogPosition(long binlogPosition) {
-    this.binlogPosition = binlogPosition;
-  }
+	public void setBinlogPosition(long binlogPosition) {
+		this.binlogPosition = binlogPosition;
+	}
 
-  public StringColumn getBinlogFileName() {
-    return binlogFileName;
-  }
+	public StringColumn getBinlogFileName() {
+		return binlogFileName;
+	}
 
-  public void setBinlogFileName(StringColumn binlogFileName) {
-    this.binlogFileName = binlogFileName;
-  }
+	public void setBinlogFileName(StringColumn binlogFileName) {
+		this.binlogFileName = binlogFileName;
+	}
 }

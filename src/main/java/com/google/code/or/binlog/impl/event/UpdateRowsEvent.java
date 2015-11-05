@@ -30,67 +30,69 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public final class UpdateRowsEvent extends AbstractRowEvent {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.UPDATE_ROWS_EVENT;
+	private static final long serialVersionUID = 8156851517217397821L;
 
-  //
-  private UnsignedLong columnCount;
-  private BitColumn usedColumnsBefore;
-  private BitColumn usedColumnsAfter;
-  private List<Pair<Row>> rows;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.UPDATE_ROWS_EVENT;
 
-  /**
+	//
+	private UnsignedLong columnCount;
+	private BitColumn usedColumnsBefore;
+	private BitColumn usedColumnsAfter;
+	private List<Pair<Row>> rows;
+
+	/**
 	 * 
 	 */
-  public UpdateRowsEvent() {}
+	public UpdateRowsEvent() {}
 
-  public UpdateRowsEvent(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public UpdateRowsEvent(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header).append("tableId", tableId)
-        .append("reserved", reserved).append("columnCount", columnCount)
-        .append("usedColumnsBefore", usedColumnsBefore)
-        .append("usedColumnsAfter", usedColumnsAfter).append("rows", rows).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header).append("tableId", tableId)
+				.append("reserved", reserved).append("columnCount", columnCount)
+				.append("usedColumnsBefore", usedColumnsBefore)
+				.append("usedColumnsAfter", usedColumnsAfter).append("rows", rows).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public UnsignedLong getColumnCount() {
-    return columnCount;
-  }
+	public UnsignedLong getColumnCount() {
+		return columnCount;
+	}
 
-  public void setColumnCount(UnsignedLong columnCount) {
-    this.columnCount = columnCount;
-  }
+	public void setColumnCount(UnsignedLong columnCount) {
+		this.columnCount = columnCount;
+	}
 
-  public BitColumn getUsedColumnsBefore() {
-    return usedColumnsBefore;
-  }
+	public BitColumn getUsedColumnsBefore() {
+		return usedColumnsBefore;
+	}
 
-  public void setUsedColumnsBefore(BitColumn usedColumnsBefore) {
-    this.usedColumnsBefore = usedColumnsBefore;
-  }
+	public void setUsedColumnsBefore(BitColumn usedColumnsBefore) {
+		this.usedColumnsBefore = usedColumnsBefore;
+	}
 
-  public BitColumn getUsedColumnsAfter() {
-    return usedColumnsAfter;
-  }
+	public BitColumn getUsedColumnsAfter() {
+		return usedColumnsAfter;
+	}
 
-  public void setUsedColumnsAfter(BitColumn usedColumnsAfter) {
-    this.usedColumnsAfter = usedColumnsAfter;
-  }
+	public void setUsedColumnsAfter(BitColumn usedColumnsAfter) {
+		this.usedColumnsAfter = usedColumnsAfter;
+	}
 
-  public List<Pair<Row>> getRows() {
-    return rows;
-  }
+	public List<Pair<Row>> getRows() {
+		return rows;
+	}
 
-  public void setRows(List<Pair<Row>> rows) {
-    this.rows = rows;
-  }
+	public void setRows(List<Pair<Row>> rows) {
+		this.rows = rows;
+	}
 }

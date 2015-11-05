@@ -14,6 +14,8 @@
  */
 package com.google.code.or.binlog.impl.event;
 
+import java.io.Serializable;
+
 import com.google.code.or.binlog.BinlogEventV4;
 import com.google.code.or.binlog.BinlogEventV4Header;
 import com.google.code.or.common.util.ToStringBuilder;
@@ -22,26 +24,27 @@ import com.google.code.or.common.util.ToStringBuilder;
  * 
  * @author Jingqi Xu
  */
-public abstract class AbstractBinlogEventV4 implements BinlogEventV4 {
-  //
-  protected BinlogEventV4Header header;
+public abstract class AbstractBinlogEventV4 implements BinlogEventV4, Serializable {
+	private static final long serialVersionUID = -4013250615180782057L;
+	//
+	protected BinlogEventV4Header header;
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public BinlogEventV4Header getHeader() {
-    return header;
-  }
+	public BinlogEventV4Header getHeader() {
+		return header;
+	}
 
-  public void setHeader(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public void setHeader(BinlogEventV4Header header) {
+		this.header = header;
+	}
 }

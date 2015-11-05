@@ -30,47 +30,49 @@ import com.google.code.or.common.util.ToStringBuilder;
  * @author Jingqi Xu
  */
 public final class IntvarEvent extends AbstractBinlogEventV4 {
-  //
-  public static final int EVENT_TYPE = MySQLConstants.INTVAR_EVENT;
+	private static final long serialVersionUID = -8777784212561872473L;
 
-  //
-  private int type;
-  private UnsignedLong value;
+	//
+	public static final int EVENT_TYPE = MySQLConstants.INTVAR_EVENT;
 
-  /**
+	//
+	private int type;
+	private UnsignedLong value;
+
+	/**
 	 * 
 	 */
-  public IntvarEvent() {}
+	public IntvarEvent() {}
 
-  public IntvarEvent(BinlogEventV4Header header) {
-    this.header = header;
-  }
+	public IntvarEvent(BinlogEventV4Header header) {
+		this.header = header;
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("header", header).append("type", type)
-        .append("value", value).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("header", header).append("type", type)
+				.append("value", value).toString();
+	}
 
-  /**
+	/**
 	 * 
 	 */
-  public int getType() {
-    return type;
-  }
+	public int getType() {
+		return type;
+	}
 
-  public void setType(int type) {
-    this.type = type;
-  }
+	public void setType(int type) {
+		this.type = type;
+	}
 
-  public UnsignedLong getValue() {
-    return value;
-  }
+	public UnsignedLong getValue() {
+		return value;
+	}
 
-  public void setValue(UnsignedLong value) {
-    this.value = value;
-  }
+	public void setValue(UnsignedLong value) {
+		this.value = value;
+	}
 }
