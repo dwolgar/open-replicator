@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.code.or.binlog.BinlogRowEventFilter;
 import com.google.code.or.binlog.impl.event.TableMapEvent;
 import com.google.code.or.binlog.impl.filter.BinlogRowEventFilterImpl;
@@ -55,6 +58,7 @@ import com.google.code.or.io.XInputStream;
  * @author Jingqi Xu
  */
 public abstract class AbstractRowEventParser extends AbstractBinlogEventParser {
+	private static final Logger logger = LoggerFactory.getLogger(AbstractRowEventParser.class);
   //
   protected BinlogRowEventFilter rowEventFilter;
 
@@ -190,6 +194,11 @@ public abstract class AbstractRowEventParser extends AbstractBinlogEventParser {
         case MySQLConstants.TYPE_VARCHAR:
         case MySQLConstants.TYPE_VAR_STRING:
           final int varcharLength = meta < 256 ? is.readInt(1) : is.readInt(2);
+          
+          int available = is.available();
+          if (available < varcharLength) {
+        	  logger.debug("AVAILABLE [" + available + "][" + varcharLength + "][" + meta + "]");
+          }
           columns.add(is.readFixedLengthString(varcharLength));
           break;
         case MySQLConstants.TYPE_TIME2:

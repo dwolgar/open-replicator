@@ -455,7 +455,8 @@ public class XInputStreamImpl extends InputStream implements XInputStream {
                                             // step!)
     this.head = 0;
     this.tail = this.is.read(this.buffer, 0, this.buffer.length);
-    if (this.tail <= 0) throw new EOFException();
+    if (this.tail <= 0) 
+    	throw new EOFException();
   }
 
   private long doSkip(final long n) throws IOException {
