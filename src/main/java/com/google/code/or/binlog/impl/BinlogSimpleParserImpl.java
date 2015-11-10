@@ -42,11 +42,14 @@ public class BinlogSimpleParserImpl implements BinlogSimpleParser, BinlogEventLi
 	private final Map<Long, TableMapEvent> tableMapEvents;
 	private String binlogFileName;
 	private BinlogEventV4 parsedEvent;
+	
+	private boolean clearTableMapOnRotate;
 
 	public BinlogSimpleParserImpl() {
 		this.defaultParser = new NopEventParser();
 		this.parsers = new BinlogEventParser[128];
 		this.tableMapEvents = new HashMap<Long, TableMapEvent>();
+		this.clearTableMapOnRotate = true;
 		
 	    this.registgerEventParser(new StopEventParser());
 	    this.registgerEventParser(new RotateEventParser());
@@ -131,8 +134,18 @@ public class BinlogSimpleParserImpl implements BinlogSimpleParser, BinlogEventLi
 		else if (event instanceof RotateEvent) {
 			final RotateEvent e = (RotateEvent) event;
 			this.binlogFileName = e.getBinlogFileName().toString();
+			
+			if (isClearTableMapOnRotate()) 
+				this.tableMapEvents.clear();
 		}
 		
 		this.parsedEvent = event;
+	}
+
+	public boolean isClearTableMapOnRotate() {
+		return clearTableMapOnRotate;
+	}
+	public void setClearTableMapOnRotate(boolean clearTableMapOnRotate) {
+		this.clearTableMapOnRotate = clearTableMapOnRotate;
 	}
 }
