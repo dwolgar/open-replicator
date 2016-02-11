@@ -1,9 +1,13 @@
 package com.google.code.or;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +36,7 @@ import com.google.code.or.net.impl.packet.ResultSetFieldPacket;
 import com.google.code.or.net.impl.packet.ResultSetHeaderPacket;
 import com.google.code.or.net.impl.packet.ResultSetRowPacket;
 import com.google.code.or.net.impl.packet.command.ComBinlogDumpPacket;
+import com.google.code.or.net.impl.packet.command.ComPing;
 import com.google.code.or.net.impl.packet.command.ComQuery;
 
 public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
@@ -54,6 +59,8 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 	private Map<String, String> variables;
 	
 	private BinlogSimpleParser parser;
+	
+	private ExecutorService pool;
 	
 	public MysqlSlaveClientBinlogProcessor() {
 		this.encoding = "utf-8";
@@ -181,6 +188,44 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 		}
 	}
 
+	private void startConnectionCheckThread() {
+		if (this.pool == null) {
+			this.pool = Executors.newSingleThreadExecutor();
+		}
+		
+		logger.info("starting connection check thread [" + masterHostname + ":" + masterPort + "]");
+		this.pool.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				while(true) {
+					
+					try {
+						Thread.sleep(10000);
+					} catch(Exception e) {
+					}
+					
+					logger.info("checking connection [" + masterHostname + ":" + masterPort + "]");
+					
+					try {
+						transport.getOutputStream().writePacket(new ComPing());
+						transport.getOutputStream().flush();
+					} catch(Exception e) {
+						try {
+							transport.disconnect();
+						} catch(Exception ex) {						
+							
+						}
+						break;
+					}
+					
+				}
+					
+			}
+			
+		});
+	}
+	
 	@Override
 	public XInputStream openInputStream() {
 		try {
@@ -197,9 +242,12 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 			
 		    XInputStream is = this.transport.getInputStream();
 		    
+		    startConnectionCheckThread();
+		    
 		    return is;
 		}
 		catch (Exception ex) {
+			logger.error("Error [" + ex.getMessage() + "]", ex);
 			throw new RuntimeException(ex);
 		}
 	}
@@ -357,5 +405,10 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 	}
 	public void setParser(BinlogSimpleParser parser) {
 		this.parser = parser;
+	}
+	
+	@Override
+	public String toString() {
+		return this.masterHostname + ":" + this.masterPort;
 	}
 }
