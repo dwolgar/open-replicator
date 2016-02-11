@@ -202,4 +202,9 @@ public class XDeserializer implements XInputStream {
   public int read(byte[] b, int off, int len, XChecksum checksum) throws IOException {
     return this.tis.read(b, off, len, checksum);
   }
+
+  @Override
+  public void resetStream() {
+	  this.tis.resetStream();
+  }
 }

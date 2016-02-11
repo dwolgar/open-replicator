@@ -27,6 +27,7 @@ import com.google.code.or.common.glossary.column.StringColumn;
  */
 public interface XInputStream {
 
+	void resetStream();
   /**
 	 * 
 	 */

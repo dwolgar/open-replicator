@@ -2,6 +2,7 @@ package com.google.code.or;
 
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,43 +192,6 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 		}
 	}
 
-	private void startConnectionCheckThread() {
-		if (this.pool == null) {
-			this.pool = Executors.newSingleThreadExecutor();
-		}
-		
-		logger.info("starting connection check thread [" + masterHostname + ":" + masterPort + "]");
-		this.pool.submit(new Runnable() {
-
-			@Override
-			public void run() {
-				while(true) {
-					
-					try {
-						Thread.sleep(getCheckConnectionInterval());
-					} catch(Exception e) {
-					}
-					
-					logger.info("checking connection [" + masterHostname + ":" + masterPort + "]");
-					
-					try {
-						transport.getOutputStream().writePacket(new ComPing());
-						transport.getOutputStream().flush();
-					} catch(Exception e) {
-						try {
-							transport.disconnect();
-						} catch(Exception ex) {						
-							
-						}
-						break;
-					}
-					
-				}
-					
-			}
-			
-		});
-	}
 	
 	@Override
 	public XInputStream openInputStream() {
@@ -244,8 +208,6 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 			dumpBinlog();
 			
 		    XInputStream is = this.transport.getInputStream();
-		    
-		    startConnectionCheckThread();
 		    
 		    return is;
 		}
@@ -323,7 +285,10 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
     	
     	}
     	catch (Exception ex) {
-    		logger.error("Error [" + ex.getMessage() + "]", ex);
+    		if (!(ex instanceof SocketTimeoutException)) {
+    			logger.error("Error [" + ex.getMessage() + "]", ex);
+    		}
+    		is.resetStream();
     		callback.onException(ex, eventPacket);
     	}
 

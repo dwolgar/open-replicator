@@ -14,6 +14,7 @@
  */
 package com.google.code.or.net.impl;
 
+import java.io.BufferedInputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -67,14 +68,20 @@ public class TransportImpl extends AbstractTransport {
 
     //
     this.socket = this.socketFactory.create(host, port);
+    
     this.os = new TransportOutputStreamImpl(this.socket.getOutputStream());
     if (this.level2BufferSize <= 0) {
       this.is = new TransportInputStreamImpl(this.socket.getInputStream(), this.level1BufferSize);
     } else {
-      this.is =
+        //this.is = new TransportInputStreamImpl(new BufferedInputStream(this.socket.getInputStream(), this.level2BufferSize), this.level1BufferSize);
+    	this.is = new TransportInputStreamImpl(this.socket.getInputStream(), this.level1BufferSize);
+
+/*      this.is =
           new TransportInputStreamImpl(new ActiveBufferedInputStream(this.socket.getInputStream(),
               this.level2BufferSize), this.level1BufferSize);
-    }
+*/    }
+    
+    this.socket.setSoTimeout(5000);
 
     //
     final Packet packet = this.is.readPacket();

@@ -52,6 +52,16 @@ public class XInputStreamImpl extends InputStream implements XInputStream {
     this.is = is;
     this.buffer = new byte[size];
   }
+  
+
+  @Override
+  public void resetStream() {
+	  this.head = 0;
+	  this.tail = 0;
+	  this.readCount = 0;
+	  this.readLimit = 0;
+  }
+
 
   /**
 	 * 
@@ -539,4 +549,5 @@ public class XInputStreamImpl extends InputStream implements XInputStream {
     }
     return len;
   }
+
 }

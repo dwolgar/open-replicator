@@ -24,9 +24,9 @@ import com.google.code.or.io.SocketFactory;
  */
 public class SocketFactoryImpl implements SocketFactory {
   //
-  private boolean keepAlive = false;
-  private boolean tcpNoDelay = false;
-  private int receiveBufferSize = -1;
+  private boolean keepAlive = true;
+  private boolean tcpNoDelay = true;
+  private int receiveBufferSize = 0x00080000;
 
   /**
 	 * 
@@ -35,7 +35,9 @@ public class SocketFactoryImpl implements SocketFactory {
     final Socket r = new Socket(host, port);
     r.setKeepAlive(this.keepAlive);
     r.setTcpNoDelay(this.tcpNoDelay);
-    if (this.receiveBufferSize > 0) r.setReceiveBufferSize(this.receiveBufferSize);
+    r.setSoLinger(false, 0);
+    if (this.receiveBufferSize > 0) 
+    	r.setReceiveBufferSize(this.receiveBufferSize);
     return r;
   }
 
