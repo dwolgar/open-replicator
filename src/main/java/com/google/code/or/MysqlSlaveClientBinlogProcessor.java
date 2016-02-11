@@ -48,6 +48,8 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 	private String password;
 	private int serverId;
 	
+	private int checkConnectionInterval;
+	
 	private String startBinlogFileName;
 	private long startBinlogPosition;
 
@@ -66,6 +68,7 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 		this.encoding = "utf-8";
 		this.variables = new HashMap<String, String>();
 		this.parser = new BinlogSimpleParserImpl();
+		this.checkConnectionInterval = 30;
 	}
 	
 	
@@ -201,7 +204,7 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 				while(true) {
 					
 					try {
-						Thread.sleep(10000);
+						Thread.sleep(getCheckConnectionInterval());
 					} catch(Exception e) {
 					}
 					
@@ -407,8 +410,18 @@ public class MysqlSlaveClientBinlogProcessor implements BinlogProcessor {
 		this.parser = parser;
 	}
 	
+	public int getCheckConnectionInterval() {
+		return checkConnectionInterval * 1000;
+	}
+	public void setCheckConnectionInterval(int checkConnectionInterval) {
+		this.checkConnectionInterval = checkConnectionInterval;
+	}
+
+	
 	@Override
 	public String toString() {
 		return this.masterHostname + ":" + this.masterPort;
 	}
+
+
 }
